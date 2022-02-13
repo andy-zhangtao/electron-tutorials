@@ -1,7 +1,7 @@
 // main.js
 
 // 控制应用生命周期和创建原生浏览器窗口的模组
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
 const path = require('path')
 const pkg = require('./package.json')
 const axios = require("axios").default;
@@ -23,6 +23,17 @@ function createWindow() {
     } else {
         mainWindow.loadFile(path.join(__dirname, './build/index.html'))
     }
+
+    ipcMain.handle('dark-mode:dark', () => {
+        nativeTheme.themeSource = 'dark'
+        return nativeTheme.shouldUseDarkColors
+    })
+
+    ipcMain.handle('dark-mode:light', () => {
+        nativeTheme.themeSource = 'light'
+        return nativeTheme.shouldUseDarkColors
+    })
+
     // 打开开发工具
     // mainWindow.webContents.openDevTools()
     ipcMain.on("translate", function (event, arg) {

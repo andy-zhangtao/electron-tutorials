@@ -1,5 +1,11 @@
 // preload.js
 const { contextBridge, ipcRenderer } = require('electron');
+
+contextBridge.exposeInMainWorld('darkMode', {
+    dark: () => ipcRenderer.invoke('dark-mode:dark'),
+    light: () => ipcRenderer.invoke('dark-mode:light')
+})
+
 contextBridge.exposeInMainWorld('electron', {
     ipcRenderer,
 });
